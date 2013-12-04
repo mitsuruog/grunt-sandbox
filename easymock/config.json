@@ -1,0 +1,14 @@
+{
+	"proxy": {
+		"server": "http://localhost:9000/",
+		"calls": {
+			"/items/": {
+				"get": true
+			}
+		}
+	},
+	"routes": [
+		"/users/",
+		"/users/:id"
+	]
+}

@@ -1,0 +1,2 @@
+cd easymock
+exec easymock

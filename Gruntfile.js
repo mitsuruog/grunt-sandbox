@@ -31,29 +31,58 @@ module.exports = function(grunt) {
           //   ];
           // },
           hostname: 'localhost',
-          port: 9000
-        },
+          port: 9000,
+          middleware: function(connect, options){
+            return [
+              connect.static(options.base),
+              require('grunt-connect-proxy/lib/utils').proxyRequest
+            ];
+          }
+        }
+      },
         proxies: [{
           context: [
-            '/hoge/',
-            '/fuga/'
+            '/items/',
+            '/users/'
             ],
           host: 'localhost',
-          port: 9001
+          port: 3000
         }]
-      }
     },
     open: {
       server: {
         path: 'http://localhost:9000'
       }
     },
+    clean: ['dist', '.tmp'],
+    rev: {
+      options: {
+        encoding: 'utf8',
+        algorithm: 'md5',
+        length: 8 
+      },
+      assets: {
+        files: [{
+          src: [
+            'public/javascripts/**/*.{js}',
+            'public/stylesheets/**/*.{css}'
+          ]
+        }]
+      }
+    },
+    useminPrepare: {
+      html: 'public/index.html',
+      options: {
+        dest: 'dist'
+      }
+    }
   });
 
   // Default task(s).
   grunt.registerTask('server', function(target) {
 
     grunt.task.run([
+      'configureProxies',
       'connect',
       'open',
       'watch'
@@ -61,4 +90,10 @@ module.exports = function(grunt) {
 
   });
 
-};
+grunt.registerTask('build', [
+  'clean',
+  'useminPrepare',
+  'rev'
+  ]);
+
+  };

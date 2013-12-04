@@ -1,0 +1,5 @@
+< @status 404
+< @header Location: http://blog.mitsuruog.info
+{
+	"name": "mitsuruog"
+}
